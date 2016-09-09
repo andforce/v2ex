@@ -305,7 +305,10 @@
         }
         else if (recognizer.state == UIGestureRecognizerStateChanged) {
             
-            [self setMenuOffset: - self.sectionView.width * progress];
+//            [self setMenuOffset: - self.sectionView.width * progress];
+            if (self.aboveTableViewButton.hidden) {
+              [self setMenuOffset: - self.sectionView.width * progress];
+            }
             
         }
         else if (recognizer.state == UIGestureRecognizerStateEnded || recognizer.state == UIGestureRecognizerStateCancelled) {
@@ -623,12 +626,12 @@
     V2TopicListCell *cell = (V2TopicListCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[V2TopicListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    // register for 3D Touch (if available)
-    if (kDeviceOSVersion > 9.0) {
-        if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-            [self registerForPreviewingWithDelegate:self sourceView:cell];
+        
+        // register for 3D Touch (if available)
+        if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_8_4) {
+            if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+                [self registerForPreviewingWithDelegate:self sourceView:cell];
+            }
         }
     }
     
@@ -684,8 +687,9 @@
 
 - (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
 
-//    UIViewController *popViewController = [[UIViewController alloc] init];
-//    [self showViewController:viewControllerToCommit sender:self];
+    V2TopicViewController *topicVC = (V2TopicViewController *)viewControllerToCommit;
+    topicVC.preview = NO;
+    [self.navigationController pushViewController:viewControllerToCommit animated:YES];
 
 }
 

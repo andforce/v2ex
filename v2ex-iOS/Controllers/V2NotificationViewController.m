@@ -205,15 +205,15 @@
     if (!cell) {
         cell = [[V2NotificationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.navi = self.navigationController;
-    }
-    
-    // register for 3D Touch (if available)
-    if (kDeviceOSVersion > 9.0) {
-        if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-            [self registerForPreviewingWithDelegate:self sourceView:cell];
+        
+        // register for 3D Touch (if available)
+        if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_8_4) {
+            if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+                [self registerForPreviewingWithDelegate:self sourceView:cell];
+            }
         }
     }
-
+    
     return [self configureNotificationCellWithCell:cell IndexPath:indexPath];
 }
 
